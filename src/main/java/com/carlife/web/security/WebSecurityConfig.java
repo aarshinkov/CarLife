@@ -1,0 +1,80 @@
+package com.carlife.web.security;
+
+import com.carlife.web.services.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.annotation.*;
+import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.authentication.builders.*;
+import org.springframework.security.config.annotation.method.configuration.*;
+import org.springframework.security.config.annotation.web.builders.*;
+import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.web.access.*;
+import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.authentication.logout.*;
+
+/**
+ *
+ * @author Atanas Yordanov Arshinkov
+ * @since 1.0.0
+ */
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter
+{
+  @Autowired
+  private AuthenticationProvider authProvider;
+
+  @Autowired
+  private AuthenticationSuccessHandler authSuccessHandler;
+
+  @Autowired
+  private SimpleUrlAuthenticationFailureHandler authFailureHandler;
+
+  @Autowired
+  private LogoutSuccessHandler logoutSuccessHandler;
+
+  @Autowired
+  private AccessDeniedHandler accessDeniedHandler;
+
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception
+  {
+    http.csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/", "/home").permitAll()
+            .antMatchers("/profile/**", "/dashboard/**", "/settings", "/changePassword").authenticated()
+            .antMatchers("/login", "/authentication").anonymous()
+            .antMatchers("/signup").anonymous()
+            .antMatchers("/users/**").hasRole("ADMIN")
+            .and()
+            .formLogin()
+            .loginProcessingUrl("/authentication")
+            .loginPage("/login")
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .successHandler(authSuccessHandler)
+            .and()
+            .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+            .and()
+            .logout()
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
+            .logoutSuccessHandler(logoutSuccessHandler)
+            .and()
+            .httpBasic();
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception
+  {
+    auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+  }
+}

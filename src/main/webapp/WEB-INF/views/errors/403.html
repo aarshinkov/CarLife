@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{templates/mainTemplate}">
+  <head>
+    <title>Access denied | CarLife</title>
+  </head>
+  <body>
+    <div layout:fragment="contentDiv">
+      <h1>Access denied!</h1>
+      <a class="btn btn-deep-orange ml-0" th:href="@{/}" href="#">Go home</a>
+    </div>
+  </body>
+</html>

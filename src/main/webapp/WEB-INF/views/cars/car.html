@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{templates/mainTemplate}">
+  <head>
+    <title th:text="#{app.title(${car.name})}">Car name</title>
+  </head>
+  <body>
+    <div layout:fragment="contentDiv">
+      <h2 class="mb-4" th:text="#{car.view.header}">View car</h2>
+
+      <h4 th:text="#{car.view.info}">Car information</h4>
+      <hr/>
+
+      <div class="row">
+        <div class="col-12 col-lg-3 col-md-4">
+          <p class="font-weight-bold" th:text="#{car.info.name}">Car name</p>
+        </div>
+        <div class="col-12 col-lg-9 col-md-8">
+          <p th:text="${car.name}">Car name</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-3 col-md-4">
+          <p class="font-weight-bold" th:text="#{car.info.year}">Year</p>
+        </div>
+        <div class="col-12 col-lg-9 col-md-8">
+          <p th:text="${car.yearMade}">Year made</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-3 col-md-4">
+          <p class="font-weight-bold" th:text="#{car.info.addedon}">Added on</p>
+        </div>
+        <div class="col-12 col-lg-9 col-md-8">
+          <p th:text="${#dates.format(car.addedOn, #messages.msg('format.datetime5'))}">Added on</p>
+        </div>
+      </div>
+      <div class="row" th:if="${car.editedOn ne null}">
+        <div class="col-12 col-lg-3 col-md-4">
+          <p class="font-weight-bold" th:text="#{car.info.editedon}">Edited on</p>
+        </div>
+        <div class="col-12 col-lg-9 col-md-8">
+          <p th:text="${#dates.format(car.editedOn, #messages.msg('format.datetime5'))}">Edited on</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

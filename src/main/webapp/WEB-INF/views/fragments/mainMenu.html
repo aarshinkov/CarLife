@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+  <body>
+    <div id="mainMenu">
+      <!--Navbar-->
+      <nav class="navbar navbar-expand-lg navbar-dark red accent-2">
+
+        <div th:classappend="${isFull} ? 'container-fluid' : 'container'">
+          <!-- Navbar brand -->
+          <a class="navbar-brand" href="#" th:href="@{/}" th:text="#{app.name}">CarLife</a>
+
+          <!-- Collapse button -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                  aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Collapsible content -->
+          <div class="collapse navbar-collapse" id="basicExampleNav">
+
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item" th:classappend="${globalMenu eq 'dashboard'} ? 'active'" sec:authorize="isAuthenticated()">
+                <a class="nav-link" href="#" th:href="@{/dashboard}">
+                  <span th:text="#{nav.profile.dashboard}">Dashboard</span>
+                </a>
+              </li>
+            </ul>
+            <!-- Links -->
+
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown" th:classappend="${globalMenu eq 'profile'} ? 'active'"
+                  sec:authorize="isAuthenticated()">
+                <a class="nav-link dropdown-toggle" id="profileDropdown" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-user-circle"></i>
+                  <span th:text="${session.user}">John Doe</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-primary"
+                     aria-labelledby="profileDropdown">
+                  <a class="dropdown-item" th:classappend="${submenu eq 'profile'} ? 'active'"
+                     href="#" th:href="@{/profile}">
+                    <i class="fas fa-user-circle"></i>
+                    <span th:text="#{nav.profile}">Profile</span>
+                  </a>
+                  <a class="dropdown-item" th:classappend="${submenu eq 'settings'} ? 'active'"
+                     href="#" th:href="@{/settings}">
+                    <i class="fas fa-cog"></i>
+                    <span th:text="#{nav.profile.settings}">Settings</span>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item text-danger" onclick="$('#formLogout').submit();" href="#">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span th:text="#{nav.logout}">Logout</span>
+                  </a>
+                  <form sec:authorize="isAuthenticated()" style="visibility: hidden;" id="formLogout" method="post" action="#" th:action="@{/logout}"></form>
+                </div>
+              </li>
+
+              <li class="nav-item" th:classappend="${globalMenu eq 'login'} ? 'active'" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" href="#" th:href="@{/login}">
+                  <span th:text="#{nav.login}">Login</span>
+                </a>
+              </li>
+              <li class="nav-item" th:classappend="${globalMenu eq 'signup'} ? 'active'" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" href="#" th:href="@{/signup}">
+                  <span th:text="#{nav.signup}">Signup</span>
+                </a>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="langDropdown" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                  <i class="flag-icon" th:classappend="'flag-icon-' + #{flag.curr}"></i>
+                  <!--<span th:text="#{nav.lang. + #{lang.curr}}">Language</span>-->
+                </a>
+                <!--                <div class="dropdown-menu dropdown-menu-right dropdown-primary" aria-labelledby="langDropdown"
+                                     th:with="request=${#httpServletRequest.requestURI}, parameters=${#httpServletRequest.queryString}">-->
+                <div class="dropdown-menu dropdown-menu-right dropdown-primary" aria-labelledby="langDropdown"
+                     th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()},
+                     request=${#httpServletRequest.requestURI}, parameters=${#httpServletRequest.queryString}">
+
+                  <!-- Language English -->
+                  <!--<div th:remove="tag" th:if="#{lang.curr} ne 'en'">-->
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'en' ? 'active'" th:href="'?lang=en'" th:if="${parameters eq null}">
+                      <i class="flag-icon flag-icon-gb"></i>
+                      <span th:text="#{nav.lang.en}">English</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'en' ? 'active'" th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}"
+                       th:if="${parameters ne null and #request.getParameter('lang') ne null}">
+                      <i class="flag-icon flag-icon-gb"></i>
+                      <span th:text="#{nav.lang.en}">English</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'en' ? 'active'" th:href="${request} + '?' + ${parameters} + '&lang=en'"
+                       th:if="${parameters ne null and #request.getParameter('lang') eq null}">
+                      <i class="flag-icon flag-icon-gb"></i>
+                      <span th:text="#{nav.lang.en}">English</span>
+                    </a>
+                  <!--</div>-->
+                  <!-- End English -->
+
+                  <!-- Language Bulgarian -->
+                  <!--<div th:remove="tag" th:if="#{lang.curr} ne 'bg'">-->
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'bg' ? 'active'" th:href="'?lang=bg'" th:if="${parameters eq null}">
+                      <i class="flag-icon flag-icon-bg"></i>
+                      <span th:text="#{nav.lang.bg}">Bulgarian</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'bg' ? 'active'" th:href="${urlBuilder.replaceQueryParam('lang', 'bg').toUriString()}"
+                       th:if="${parameters ne null and #request.getParameter('lang') ne null}">
+                      <i class="flag-icon flag-icon-bg"></i>
+                      <span th:text="#{nav.lang.bg}">Bulgarian</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'bg' ? 'active'" th:href="${request} + '?' + ${parameters} + '&lang=en'"
+                       th:if="${parameters ne null and #request.getParameter('lang') eq null}">
+                      <i class="flag-icon flag-icon-bg"></i>
+                      <span th:text="#{nav.lang.bg}">Bulgarian</span>
+                    </a>
+                  <!--</div>-->
+                  <!-- End Bulgarian -->
+
+                  <!-- Language Spanish -->
+                  <!--<div th:remove="tag" th:if="#{lang.curr} ne 'es'">-->
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'es' ? 'active'" th:href="'?lang=es'" th:if="${parameters eq null}">
+                      <i class="flag-icon flag-icon-es"></i>
+                      <span th:text="#{nav.lang.es}">Spanish</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'es' ? 'active'" th:href="${urlBuilder.replaceQueryParam('lang', 'es').toUriString()}"
+                       th:if="${parameters ne null and #request.getParameter('lang') ne null}">
+                      <i class="flag-icon flag-icon-es"></i>
+                      <span th:text="#{nav.lang.es}">Spanish</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'es' ? 'active'" th:href="${request} + '?' + ${parameters} + '&lang=en'"
+                       th:if="${parameters ne null and #request.getParameter('lang') eq null}">
+                      <i class="flag-icon flag-icon-es"></i>
+                      <span th:text="#{nav.lang.es}">Spanish</span>
+                    </a>
+                  <!--</div>-->
+                  <!-- End Spanish -->
+
+                  <!-- Language Russian -->
+                  <!--<div th:remove="tag" th:if="#{lang.curr} ne 'ru'">-->
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'ru' ? 'active'" th:href="'?lang=ru'" th:if="${parameters eq null}">
+                      <i class="flag-icon flag-icon-ru"></i>
+                      <span th:text="#{nav.lang.ru}">Russian</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'ru' ? 'active'" th:href="${urlBuilder.replaceQueryParam('lang', 'ru').toUriString()}"
+                       th:if="${parameters ne null and #request.getParameter('lang') ne null}">
+                      <i class="flag-icon flag-icon-ru"></i>
+                      <span th:text="#{nav.lang.ru}">Russian</span>
+                    </a>
+                    <a class="dropdown-item" th:classappend="#{lang.curr} eq 'ru' ? 'active'" th:href="${request} + '?' + ${parameters} + '&lang=ru'"
+                       th:if="${parameters ne null and #request.getParameter('lang') eq null}">
+                      <i class="flag-icon flag-icon-ru"></i>
+                      <span th:text="#{nav.lang.ru}">Russian</span>
+                    </a>
+                  <!--</div>-->
+                  <!-- End Russian -->
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- Collapsible content -->
+
+        </div>
+      </nav>
+      <!--/.Navbar-->
+    </div>
+  </body>
+</html>

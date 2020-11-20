@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+  <body>
+    <!-- Footer -->
+    <footer id="footer" class="page-footer font-small red accent-2">
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-12 text-center mt-3 mb-2">
+            <i class="fas fa-mobile-alt d-inline d-sm-none white-text" th:title="#{screen.xs}"></i>
+            <i class="fas fa-mobile-alt d-none d-sm-inline text-faded" th:title="#{screen.xs}"></i>
+
+            <i class="fas fa-tablet-alt d-none d-sm-inline d-md-none white-text" th:title="#{screen.sm}"></i>
+            <i class="fas fa-tablet-alt d-inline d-sm-none d-md-inline text-faded" th:title="#{screen.sm}"></i>
+
+            <i class="fas fa-desktop d-none d-md-inline d-lg-none white-text" th:title="#{screen.md}"></i>
+            <i class="fas fa-desktop d-inline d-md-none d-lg-inline text-faded" th:title="#{screen.md}"></i>
+
+            <i class="fas fa-tv d-none d-lg-inline white-text" th:title="#{screen.lg}"></i>
+            <i class="fas fa-tv d-inline d-lg-none text-faded" th:title="#{screen.lg}"></i>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright text-center py-3">
+        <span>&copy;</span>
+        <span th:text="${#dates.year(#dates.createNow())}"></span>
+        <span th:text="#{copyright}">Copyright</span>
+        <a href="#" th:href="@{/}" th:text="#{app.name}">CarLife</a>
+      </div>
+
+    </footer>
+
+
+    <footer id="footer4" class="page-footer font-small mt-5 red accent-2">
+
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3">
+        <div class="md">
+          <i class="fas fa-mobile-alt d-inline d-sm-none white-text" th:title="#{screen.xs}"></i>
+          <i class="fas fa-mobile-alt d-none d-sm-inline" th:title="#{screen.xs}"></i>
+
+          <i class="fas fa-tablet-alt d-none d-sm-inline d-md-none white-text" th:title="#{screen.sm}"></i>
+          <i class="fas fa-tablet-alt d-inline d-sm-none d-md-inline" th:title="#{screen.sm}"></i>
+
+          <i class="fas fa-desktop d-none d-md-inline d-lg-none white-text" th:title="#{screen.md}"></i>
+          <i class="fas fa-desktop d-inline d-md-none d-lg-inline" th:title="#{screen.md}"></i>
+
+          <i class="fas fa-tv d-none d-lg-inline white-text" th:title="#{screen.lg}"></i>
+          <i class="fas fa-tv d-inline d-lg-none" th:title="#{screen.lg}"></i>
+        </div>
+        <div>
+          <span>&copy;</span>
+          <span th:text="#{copyright}">Copyright</span>
+          <span th:text="${#dates.year(#dates.createNow())}"></span>
+          <a href="#" th:href="@{/}" th:text="#{app.name}">CarLife</a>
+        </div>
+      </div>
+      <!-- Copyright -->
+
+    </footer>
+  </body>
+</html>

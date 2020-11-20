@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{templates/mainTemplate}">
+  <head>
+    <title th:text="#{app.title(#{dashboard.title})}">Dashboard</title>
+  </head>
+  <body>
+    <div layout:fragment="contentDiv">
+      <h2 class="mb-4" th:text="#{dashboard.header}">Dashboard</h2>
+
+      <h4 th:text="#{dashboard.cars}">Cars</h4>
+      <hr/>
+
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mb-4" th:each="car : ${cars}">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title" th:text="${car.name}">Car name</h4>
+              <p class="card-text" th:text="${#dates.format(car.addedOn, #messages.msg('format.datetime5'))}">Added on</p>
+              <a href="#" class="btn btn-deep-orange btn-sm ml-0" th:href="@{/car(id=${car.carId})}">
+                <span th:text="#{btn.view}">View</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
